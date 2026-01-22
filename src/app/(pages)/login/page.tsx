@@ -42,19 +42,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-100 dark:bg-black px-4">
-      <div className="flex w-full max-w-5xl flex-col overflow-hidden rounded-xl bg-white shadow-md dark:bg-zinc-900 md:flex-row">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-100 px-4">
+      <div className="flex w-full max-w-5xl flex-col overflow-hidden rounded-xl bg-white shadow-md md:flex-row">
         <div className="flex w-full flex-col justify-center p-10 md:w-1/2">
-          <h1 className="max-w-sm text-3xl font-bold leading-10 tracking-tight text-black dark:text-zinc-50">
+          <h1 className="max-w-sm text-3xl font-bold leading-10 tracking-tight text-black ">
             Please log in to access the Smart Queue System.
           </h1>
         </div>
 
-        <div className="hidden w-px bg-zinc-200 dark:bg-zinc-800 md:block" />
+        <div className="hidden w-px bg-zinc-200 md:block" />
 
-        <div className="flex w-full flex-col justify-center gap-6 p-10 dark:border-zinc-800 md:w-1/2 md:border-l">
+        <div className="flex w-full flex-col justify-center gap-6 p-10 border-zinc-800 md:w-1/2 md:border-l">
           <div className="flex flex-col">
-            <label className="font-semibold text-sm text-zinc-500 dark:text-zinc-400">
+            <label className="font-semibold text-sm text-zinc-500">
               Email
             </label>
             <input
@@ -63,12 +63,12 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="mt-1 rounded border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="mt-1 rounded border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="font-semibold text-sm text-zinc-500 dark:text-zinc-400">
+            <label className="font-semibold text-sm text-zinc-500">
               Password
             </label>
             <input
@@ -77,7 +77,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="mt-1 rounded border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+              className="mt-1 rounded border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
