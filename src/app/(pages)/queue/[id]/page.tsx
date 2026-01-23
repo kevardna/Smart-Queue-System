@@ -2,14 +2,10 @@
 
 import { use, useEffect, useState } from "react";
 import { statusConfig } from "./lib/StatusConfig";
+import { QueueDetail } from "./lib/QueueType";
+import { io } from "socket.io-client";
 
-type QueueDetail = {
-  id: number;
-  queue_code: string;
-  status: string;
-  service_name: string;
-  created_at: string;
-};
+const socket = io("http://localhost:3456");
 
 export default function QueueDetailPage({
   params,
@@ -28,6 +24,28 @@ export default function QueueDetailPage({
         setLoading(false);
       })
       .catch(() => setLoading(false));
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    // join room
+    socket.emit("join-queue", Number(id));
+
+    // listen update
+    socket.on("queue-updated", (updatedQueue: QueueDetail) => {
+      setQueue(updatedQueue);
+    });
+
+    socket.on("queue-called", () => {
+      // optional: sound / alert
+      console.log("Queue is being called");
+    });
+
+    return () => {
+      socket.off("queue-updated");
+      socket.off("queue-called");
+    };
   }, [id]);
 
   return (
@@ -65,7 +83,9 @@ export default function QueueDetailPage({
 
                 <div>
                   <span className="font-semibold">Status</span>
-                  <p className={`font-bold ${statusConfig[queue.status].color}`}>
+                  <p
+                    className={`font-bold ${statusConfig[queue.status].color}`}
+                  >
                     {queue.status}
                   </p>
                   <p className="text-sm text-zinc-500 mt-1">
