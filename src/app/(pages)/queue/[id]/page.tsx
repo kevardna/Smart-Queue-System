@@ -3,9 +3,7 @@
 import { use, useEffect, useState } from "react";
 import { statusConfig } from "./lib/StatusConfig";
 import { QueueDetail } from "./lib/QueueType";
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:3456");
+import { socket } from "@/lib/socket";
 
 export default function QueueDetailPage({
   params,
@@ -29,22 +27,14 @@ export default function QueueDetailPage({
   useEffect(() => {
     if (!id) return;
 
-    // join room
     socket.emit("join-queue", Number(id));
 
-    // listen update
     socket.on("queue-updated", (updatedQueue: QueueDetail) => {
       setQueue(updatedQueue);
     });
 
-    socket.on("queue-called", () => {
-      // optional: sound / alert
-      console.log("Queue is being called");
-    });
-
     return () => {
       socket.off("queue-updated");
-      socket.off("queue-called");
     };
   }, [id]);
 
@@ -94,8 +84,8 @@ export default function QueueDetailPage({
                 </div>
 
                 <div>
-                  <span className="font-semibold">Created At</span>
-                  <p>{new Date(queue.created_at).toLocaleString()}</p>
+                  <span className="font-semibold">{queue.status === "DONE" ? "Completed At" : queue.status === "CALLING" ? "Called At" : "Created At"}</span>
+                  <p>{new Date(queue.status === "DONE" ? queue.done_at : queue.status === "CALLING" ? queue.called_at : queue.created_at).toLocaleString()}</p>
                 </div>
               </div>
             </div>

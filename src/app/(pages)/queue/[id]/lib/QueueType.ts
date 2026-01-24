@@ -4,4 +4,6 @@ export type QueueDetail = {
   status: string;
   service_name: string;
   created_at: string;
+  called_at: string;
+  done_at: string;
 };

@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     );
 
     const [rows] = await db.query(
-      `SELECT q.id, q.queue_code, q.status, s.name AS service_name, q.created_at
+      `SELECT q.id, q.queue_code, q.status, s.name AS service_name, q.created_at, q.called_at, q.done_at
       FROM queues q
       JOIN services s ON s.id = q.service_id
       WHERE q.id = ?`,

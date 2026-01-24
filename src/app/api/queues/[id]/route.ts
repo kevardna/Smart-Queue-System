@@ -16,6 +16,8 @@ export async function GET(
         q.status,
         q.queue_date,
         q.created_at,
+        q.called_at,
+        q.done_at,
         s.name AS service_name
        FROM queues q
        JOIN services s ON s.id = q.service_id

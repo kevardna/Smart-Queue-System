@@ -5,7 +5,9 @@ const app = express();
 app.use(express.json());
 
 export const io = new Server(3456, {
-  cors: { origin: "http://localhost:3000" },
+  cors: {
+    origin: "http://localhost:3000",
+  },
 });
 
 io.on("connection", (socket) => {
@@ -13,18 +15,29 @@ io.on("connection", (socket) => {
     socket.join(`queue_${queueId}`);
   });
 });
-  
-app.post("/emit/queue-called", (req , res) => {
-  const { queue } = req.body;
 
-  io.to(`queue_${queue.id}`).emit("queue-called");
+const emitQueueUpdate = (queue) => {
   io.to(`queue_${queue.id}`).emit("queue-updated", queue);
+};
 
+app.post("/emit/queue-called", (req, res) => {
+  emitQueueUpdate(req.body.queue);
   res.json({ success: true });
 });
 
-app.listen(4000, () => {
-  console.log("Emit server on :4000");
+app.post("/emit/queue-skipped", (req, res) => {
+  emitQueueUpdate(req.body.queue);
+  res.json({ success: true });
 });
 
-console.log("Socket running on :3456");
+app.post("/emit/queue-finished", (req, res) => {
+  emitQueueUpdate(req.body.queue);
+  res.json({ success: true });
+});
+
+
+app.listen(4000, () => {
+  console.log("Emit server running on :4000");
+});
+
+console.log("Socket.IO running on :3456");
