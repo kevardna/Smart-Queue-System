@@ -23,14 +23,15 @@ export default function LoginPage() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || "Login failed");
+        throw new Error(errorData.message || "Login failed"); 
       }
 
       const data = await res.json();
-      document.cookie = `token=${data.data.token}; path=/`;
+      localStorage.setItem("sqs-token", data.data.token); 
+      console.log("Logged in as:", data.data.user.role);
 
       if (data.data.user.role === "ADMIN") {
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard";  
       } else if (data.data.user.role === "STAFF") {
         window.location.href = "/counter";
       }

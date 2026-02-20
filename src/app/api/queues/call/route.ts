@@ -1,10 +1,30 @@
 import { db } from "@/lib/db";
 import { successResponse, errorResponse } from "@/lib/response";
 import { QueryResult } from "mysql2";
+import { headers } from "next/headers";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {
-    const { queue_id, user_id } = await req.json();
+    const { queue_id } = await req.json();
+    const headersList = await headers();
+    const authHeader = headersList.get("authorization");
+
+    if (!authHeader) {
+      return errorResponse("No token provided", 401);
+    }
+
+    const token = authHeader.startsWith("Bearer ")
+      ? authHeader.split(" ")[1]
+      : authHeader;
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: number;
+      counter_id: number;
+      role: "ADMIN" | "STAFF";
+    };
+
+    const user_id = decoded.id;
 
     await db.query(
       `UPDATE queues

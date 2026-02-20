@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { verifyToken } from "@/lib/jwt"
+import { verifyToken } from "./lib/jwt"
 
-export function proxy(req: NextRequest) {
-  const token = req.cookies.get("token")?.value
+export async function proxy(req: NextRequest) {
+  const token = req.cookies.get("token")?.value 
   const pathname = req.nextUrl.pathname
+
+  console.log(token)
 
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url))
@@ -11,8 +13,9 @@ export function proxy(req: NextRequest) {
 
   let decoded
   try {
-    decoded = verifyToken(token)
+    decoded = await verifyToken(token)
   } catch {
+    console.log("Decoded token:", decoded)
     return NextResponse.redirect(new URL("/login", req.url))
   }
 
